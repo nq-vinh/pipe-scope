@@ -1,0 +1,73 @@
+<div class="live-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Streaming telemetry</p>
+      <h1>Live monitor</h1>
+      <p class="intro">
+        Watch seeded pipeline telemetry as it arrives from the simulated inspection tool.
+      </p>
+    </div>
+
+    <div class="connection-status" role="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>{{ paused() ? 'Stream paused' : 'Stream connected' }}</span>
+      <span class="source-rate">40 Hz source</span>
+    </div>
+  </header>
+
+  <section class="stats-section" aria-labelledby="live-stats-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Current readings</p>
+        <h2 id="live-stats-title">Pipeline conditions</h2>
+      </div>
+      <span class="section-detail">Latest telemetry frame</span>
+    </div>
+
+    <div class="stat-grid">
+      <app-telemetry-stat
+        label="Velocity"
+        unit="m/s"
+        [value]="currentFrame()?.velocityMps ?? null"
+        [previousValue]="previousFrame()?.velocityMps ?? null"
+        [fractionDigits]="2"
+        [trendThreshold]="0.015"
+      />
+      <app-telemetry-stat
+        label="Pressure"
+        unit="bar"
+        [value]="currentFrame()?.pressureBar ?? null"
+        [previousValue]="previousFrame()?.pressureBar ?? null"
+        [fractionDigits]="1"
+        [trendThreshold]="0.15"
+      />
+      <app-telemetry-stat
+        label="Temperature"
+        unit="°C"
+        [value]="currentFrame()?.temperatureC ?? null"
+        [previousValue]="previousFrame()?.temperatureC ?? null"
+        [fractionDigits]="1"
+        [trendThreshold]="0.03"
+      />
+    </div>
+  </section>
+
+  @if (reducedMotion && paused()) {
+    <p class="motion-note" role="note">
+      Reduced motion is enabled, so the live stream starts paused. Press Play to opt in to the
+      waveform animation.
+    </p>
+  }
+
+  <section class="waveform-section" aria-labelledby="waveform-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Ultrasound signal</p>
+        <h2 id="waveform-title">Ultrasound trace</h2>
+      </div>
+      <span class="section-detail">40 Hz frames · 60+ fps draw loop</span>
+    </div>
+
+    <app-waveform-canvas [frames]="frames$" [(paused)]="paused" />
+  </section>
+</div>

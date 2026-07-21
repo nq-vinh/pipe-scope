@@ -1,0 +1,73 @@
+@use '../../../../styles/mixins' as mixins;
+
+:host {
+  display: block;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.table-scroll:focus-visible {
+  @include mixins.focus-ring;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+caption {
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-align: left;
+}
+
+th,
+td {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+th {
+  background: var(--color-surface-raised);
+  font-size: var(--font-size-sm);
+}
+
+th button {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+th button:focus-visible,
+td a:focus-visible {
+  @include mixins.focus-ring;
+}
+
+.align-end {
+  text-align: right;
+}
+
+tr.is-linked:hover td {
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+  cursor: pointer;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  text-align: center;
+}

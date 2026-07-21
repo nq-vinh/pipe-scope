@@ -1,0 +1,66 @@
+<div class="waveform-toolbar">
+  <p class="canvas-note">Amplitude history is retained while the stream is paused.</p>
+  <button
+    type="button"
+    class="toggle-button"
+    [attr.aria-pressed]="paused()"
+    (click)="togglePaused()"
+  >
+    <app-icon [name]="paused() ? 'play' : 'pause'" [size]="18" />
+    <span>{{ paused() ? 'Resume stream' : 'Pause stream' }}</span>
+  </button>
+</div>
+
+<div class="canvas-frame" role="img" [attr.aria-label]="canvasLabel()">
+  <canvas #canvas data-chart-color aria-hidden="true"></canvas>
+  <p class="visually-hidden">
+    This canvas shows the current ultrasound amplitude trace across the sensor array, with faded
+    trails for the most recent frames. The center line represents zero amplitude.
+  </p>
+</div>
+
+<p class="visually-hidden" aria-live="polite">{{ liveSummary() }}</p>
+
+<p class="health-line">
+  <span>Frames received: {{ framesReceived() }}</span>
+  <span aria-hidden="true">·</span>
+  <span>Measured draw FPS: {{ drawFps() }}</span>
+</p>
+
+<details class="latest-readings">
+  <summary>Latest readings</summary>
+  <div
+    class="table-scroll"
+    role="region"
+    tabindex="0"
+    aria-label="Latest telemetry readings, scrollable table"
+  >
+    <table>
+      <caption>
+        Last 10 downsampled telemetry frames
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Time</th>
+          <th scope="col">Velocity</th>
+          <th scope="col">Pressure</th>
+          <th scope="col">Temperature</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (reading of latestReadings(); track reading.timestampMs + '-' + $index) {
+          <tr>
+            <td>{{ formatTimestamp(reading.timestampMs) }}</td>
+            <td>{{ formatVelocity(reading.velocityMps) }}</td>
+            <td>{{ formatPressure(reading.pressureBar) }}</td>
+            <td>{{ formatTemperature(reading.temperatureC) }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4">No readings received yet.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</details>

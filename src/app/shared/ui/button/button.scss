@@ -1,0 +1,43 @@
+@use '../../../../styles/mixins' as mixins;
+
+:host {
+  display: inline-flex;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+button:focus-visible {
+  @include mixins.focus-ring;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.secondary {
+  background: var(--color-surface);
+  color: var(--color-accent);
+}
+
+.quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-accent);
+}

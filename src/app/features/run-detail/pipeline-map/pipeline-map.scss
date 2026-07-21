@@ -1,0 +1,146 @@
+@use '../../../../styles/mixins' as mixins;
+
+:host {
+  display: block;
+}
+
+.visually-hidden {
+  @include mixins.visually-hidden;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 13rem;
+  overflow: visible;
+}
+
+.axis line {
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+}
+
+.axis-tick {
+  stroke: var(--color-text-muted) !important;
+}
+
+.axis text,
+.no-markers {
+  fill: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tube {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-accent);
+  stroke-width: 3;
+}
+
+.welds line {
+  stroke: var(--color-border);
+  stroke-width: 2;
+  stroke-dasharray: 3 3;
+}
+
+.marker {
+  --marker-color: var(--color-accent);
+  color: var(--marker-color);
+  cursor: pointer;
+  outline: none;
+}
+
+.marker[data-severity='low'] {
+  --marker-color: var(--color-severity-low);
+}
+
+.marker[data-severity='medium'] {
+  --marker-color: var(--color-severity-medium);
+}
+
+.marker[data-severity='high'] {
+  --marker-color: var(--color-severity-high);
+}
+
+.marker[data-severity='critical'] {
+  --marker-color: var(--color-severity-critical);
+}
+
+.marker-hit {
+  fill: transparent;
+}
+
+.marker-glyph {
+  fill: var(--marker-color);
+  stroke: var(--color-surface);
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.marker-glyph-line {
+  fill: none;
+  stroke: var(--marker-color);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.marker-focus-ring {
+  fill: none;
+  stroke: var(--color-focus);
+  stroke-width: 3;
+  opacity: 0;
+  vector-effect: non-scaling-stroke;
+}
+
+.marker:focus-visible .marker-focus-ring {
+  opacity: 1;
+}
+
+.marker.is-selected .marker-focus-ring {
+  opacity: 1;
+  stroke-width: 4;
+}
+
+.marker-label {
+  pointer-events: none;
+}
+
+.marker-label rect {
+  fill: var(--color-surface);
+  stroke: var(--color-focus);
+  stroke-width: 1.5;
+}
+
+.marker-label text {
+  fill: var(--color-text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.marker-label-detail {
+  fill: var(--color-text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+.table-disclosure {
+  margin-block-start: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.table-disclosure summary {
+  width: fit-content;
+  padding-block: var(--space-3);
+  color: var(--color-accent);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.table-disclosure summary:focus-visible {
+  @include mixins.focus-ring;
+}
+
+.table-disclosure[open] summary {
+  margin-block-end: var(--space-3);
+}

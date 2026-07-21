@@ -1,0 +1,37 @@
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  [attr.role]="label() ? 'img' : null"
+  [attr.aria-label]="label()"
+  [attr.aria-hidden]="label() ? null : 'true'"
+>
+  @switch (name()) {
+    @case ('arrow') {
+      <path d="m5 12 14 0m-5-5 5 5-5 5" />
+    }
+    @case ('sort') {
+      <path d="m8 7 4-4 4 4M12 3v18m4-4-4 4-4-4" />
+    }
+    @case ('pause') {
+      <path d="M8 5v14M16 5v14" />
+    }
+    @case ('play') {
+      <path d="m8 5 11 7-11 7Z" />
+    }
+    @case ('warning') {
+      <path d="M12 3 2.5 20h19L12 3Z" />
+      <path d="M12 9v4m0 3h.01" />
+    }
+    @case ('pipeline') {
+      <path d="M3 8h18v8H3zM7 8V5m10 3V5M7 19v-3m10 3v-3" />
+      <circle cx="7" cy="5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="7" cy="19" r="1" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="19" r="1" fill="currentColor" stroke="none" />
+    }
+  }
+</svg>

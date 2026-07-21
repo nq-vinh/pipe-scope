@@ -1,0 +1,124 @@
+<p id="pipeline-map-summary" class="visually-hidden">{{ summary() }}</p>
+
+<svg
+  [attr.aria-describedby]="'pipeline-map-summary'"
+  [attr.aria-label]="segmentName() + ' pipeline map'"
+  [attr.height]="svgHeight"
+  [attr.viewBox]="'0 0 ' + svgWidth + ' ' + svgHeight"
+  [attr.width]="svgWidth"
+  data-chart-color
+  role="group"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g class="axis" aria-hidden="true">
+    <line [attr.x1]="axisStart" [attr.x2]="axisEnd" [attr.y1]="axisY" [attr.y2]="axisY" />
+    @for (tick of axisTicks(); track tick) {
+      <line
+        class="axis-tick"
+        [attr.x1]="distanceScale()(tick)"
+        [attr.x2]="distanceScale()(tick)"
+        [attr.y1]="axisY - 5"
+        [attr.y2]="axisY + 5"
+      />
+      <text [attr.x]="distanceScale()(tick)" [attr.y]="axisY + 24" text-anchor="middle">
+        {{ formatTick(tick) }} km
+      </text>
+    }
+  </g>
+
+  <rect
+    class="tube"
+    [attr.height]="tubeHeight"
+    [attr.rx]="tubeHeight / 2"
+    [attr.width]="axisEnd - axisStart"
+    [attr.x]="axisStart"
+    [attr.y]="tubeY"
+  />
+
+  <g class="welds" aria-hidden="true">
+    @for (tick of weldTicks(); track tick) {
+      <line
+        [attr.x1]="distanceScale()(tick)"
+        [attr.x2]="distanceScale()(tick)"
+        [attr.y1]="tubeY + 8"
+        [attr.y2]="tubeY + tubeHeight - 8"
+      />
+    }
+  </g>
+
+  <g class="markers">
+    @for (marker of positionedMarkers(); track marker.anomaly.id) {
+      <g
+        #marker
+        class="marker"
+        [attr.aria-label]="marker.ariaLabel"
+        [attr.aria-pressed]="marker.anomaly.id === selectedAnomalyId() ? 'true' : 'false'"
+        [attr.data-severity]="marker.anomaly.severity"
+        [attr.data-type]="marker.anomaly.type"
+        [class.is-selected]="marker.anomaly.id === selectedAnomalyId()"
+        [attr.tabindex]="marker.index === activeMarkerIndex() ? 0 : -1"
+        [attr.transform]="'translate(' + marker.x + ' ' + markerY + ')'"
+        role="button"
+        (click)="selectMarker(marker.index)"
+        (keydown)="handleMarkerKeydown($event, marker.index)"
+      >
+        <title>{{ marker.ariaLabel }}</title>
+        <circle class="marker-hit" r="16" />
+        <circle class="marker-focus-ring" r="17" />
+        @switch (marker.anomaly.type) {
+          @case ('metal-loss') {
+            <circle class="marker-glyph" r="10" />
+          }
+          @case ('crack') {
+            <path class="marker-glyph marker-glyph-line" d="M-10-8 -3-2 -6 3 3 8 10 1" />
+          }
+          @case ('dent') {
+            <rect class="marker-glyph" x="-9" y="-9" width="18" height="18" rx="3" />
+          }
+          @case ('weld-anomaly') {
+            <path class="marker-glyph" d="M0-11 11 0 0 11-11 0Z" />
+          }
+          @case ('corrosion') {
+            <path class="marker-glyph" d="M-10-5-4-10 4-9 10-2 7 7-2 10-10 4Z" />
+          }
+        }
+      </g>
+    } @empty {
+      <text
+        class="no-markers"
+        [attr.x]="(axisStart + axisEnd) / 2"
+        [attr.y]="markerY + 6"
+        text-anchor="middle"
+      >
+        No anomalies detected
+      </text>
+    }
+  </g>
+
+  @if (activeMarker(); as active) {
+    <g
+      class="marker-label"
+      aria-hidden="true"
+      [attr.transform]="'translate(' + active.labelX + ' ' + (markerY - 55) + ')'"
+    >
+      <rect x="-92" y="-28" width="184" height="44" rx="8" />
+      <text y="-8" text-anchor="middle">{{ typeLabel(active.anomaly.type) }}</text>
+      <text class="marker-label-detail" y="9" text-anchor="middle">
+        {{ formatDistance(active.anomaly.distanceM) }} m · {{ active.anomaly.severity }}
+      </text>
+    </g>
+  }
+</svg>
+
+<details class="table-disclosure">
+  <summary>View as table</summary>
+  <app-data-table
+    caption="Pipeline anomalies"
+    [columns]="tableColumns"
+    [rowKey]="tableRowKey"
+    [rowLabel]="tableRowLabel"
+    [rowLink]="tableRowLink"
+    [rows]="sortedAnomalies()"
+    emptyMessage="No anomalies detected in this run."
+  />
+</details>

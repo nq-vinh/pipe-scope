@@ -1,0 +1,105 @@
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Operations overview</p>
+    <h1>Inspection runs</h1>
+    <p class="intro">Review simulated in-line inspection runs and their pipeline coverage.</p>
+  </div>
+</header>
+
+@defer (on idle) {
+  <section class="stats" aria-label="Inspection totals">
+    <app-card>
+      <span class="stat-label">Total distance inspected</span>
+      <strong class="stat-value">{{ formatNumber(totalDistanceKm()) }} km</strong>
+      <span class="stat-note">Across {{ formatInteger(runs().length) }} runs</span>
+    </app-card>
+    <app-card>
+      <span class="stat-label">Anomalies recorded</span>
+      <strong class="stat-value">{{ formatInteger(totalAnomalyCount()) }}</strong>
+      <span class="stat-note">Findings across the inspection history</span>
+    </app-card>
+    <app-card variant="raised">
+      <span class="stat-label">Critical findings</span>
+      <strong class="stat-value">{{ formatInteger(criticalAnomalyCount()) }}</strong>
+      <span class="stat-note">Prioritised for engineering review</span>
+    </app-card>
+  </section>
+} @placeholder {
+  <div class="stats-placeholder" aria-hidden="true"></div>
+}
+
+<section class="filters" aria-labelledby="filters-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Find a run</p>
+      <h2 id="filters-title">Filter inspection history</h2>
+    </div>
+    @if (visibleRuns().length !== runs().length) {
+      <span class="result-count">
+        {{ formatInteger(visibleRuns().length) }} of {{ formatInteger(runs().length) }} runs
+      </span>
+    }
+  </div>
+
+  <form [formGroup]="filterForm" (submit)="$event.preventDefault()">
+    <div class="filter-field search-field">
+      <label for="run-search">Search segment</label>
+      <input
+        id="run-search"
+        type="search"
+        formControlName="search"
+        autocomplete="off"
+        placeholder="e.g. Elbe Crossing North"
+      />
+    </div>
+
+    <div class="filter-field">
+      <label for="minimum-severity">Minimum severity</label>
+      <select id="minimum-severity" formControlName="minimumSeverity">
+        @for (option of severityOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="date-range">Date range</label>
+      <select id="date-range" formControlName="dateRange">
+        @for (option of dateRangeOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+
+    <app-button variant="quiet" type="reset" (pressed)="clearFilters()">Clear filters</app-button>
+  </form>
+</section>
+
+<section class="runs-list" aria-labelledby="runs-list-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Inspection history</p>
+      <h2 id="runs-list-title">Runs</h2>
+    </div>
+  </div>
+
+  @if (visibleRuns().length > 0) {
+    <app-data-table
+      caption="Inspection runs"
+      [columns]="columns"
+      [rows]="visibleRuns()"
+      [rowKey]="rowKey"
+      [rowLink]="rowLink"
+      [rowLabel]="rowLabel"
+      [sort]="sort()"
+      (sortChange)="sort.set($event)"
+      emptyMessage="No inspection runs match these filters."
+    />
+  } @else {
+    <app-card class="empty-state">
+      <h3>No runs match your filters</h3>
+      <p>Try a broader segment search, severity, or date range.</p>
+      <app-button variant="secondary" (pressed)="clearFilters()">Clear filters</app-button>
+    </app-card>
+  }
+</section>

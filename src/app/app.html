@@ -1,0 +1,43 @@
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" routerLink="/runs" aria-label="PipeScope home">
+      <app-icon name="pipeline" [size]="28" />
+      <span>PipeScope</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary navigation">
+      <a
+        routerLink="/runs"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ariaCurrentWhenActive="page"
+      >
+        Runs
+      </a>
+      <a
+        routerLink="/live"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+      >
+        Live
+      </a>
+      <a
+        routerLink="/design-system"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+      >
+        Design system
+      </a>
+    </nav>
+
+    <app-theme-switch />
+  </div>
+</header>
+
+<main #main id="main" tabindex="-1">
+  <router-outlet />
+</main>

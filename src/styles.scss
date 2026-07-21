@@ -1,0 +1,241 @@
+@use 'styles/mixins' as mixins;
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
+}
+
+/* Metric-matched fallback so the swap to Inter causes no layout shift. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+  size-adjust: 107.4%;
+}
+
+:root {
+  color-scheme: light;
+  --color-bg: #fafaf9;
+  --color-surface: #ffffff;
+  --color-surface-raised: #efefec;
+  --color-border: #80807c;
+  --color-text: #1c1c1e;
+  --color-text-muted: #52525b;
+  --color-accent: #496d10;
+  --color-accent-contrast: #ffffff;
+  --color-focus: #496d10;
+  --color-severity-low: #3f6212;
+  --color-severity-low-surface: #ecfccb;
+  --color-severity-medium: #854d0e;
+  --color-severity-medium-surface: #fef9c3;
+  --color-severity-high: #9a3412;
+  --color-severity-high-surface: #ffedd5;
+  --color-severity-critical: #9f1239;
+  --color-severity-critical-surface: #ffe4e6;
+  --color-chart-1: #496d10;
+  --color-chart-2: #6d28d9;
+  --color-chart-3: #c2410c;
+  --color-chart-4: #be123c;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --radius-sm: 0.4rem;
+  --radius-md: 0.65rem;
+  --radius-lg: 0.875rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: clamp(2rem, 5vw, 3.25rem);
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  --shadow-raised: 0 0.75rem 2rem rgb(28 28 30 / 0.12);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #111113;
+  --color-surface: #1c1c20;
+  --color-surface-raised: #26262b;
+  --color-border: #7e7e86;
+  --color-text: #e7e7ea;
+  --color-text-muted: #b7b7bd;
+  --color-accent: #84cc16;
+  --color-accent-contrast: #111113;
+  --color-focus: #84cc16;
+  --color-severity-low: #bef264;
+  --color-severity-low-surface: #1a2e05;
+  --color-severity-medium: #fde047;
+  --color-severity-medium-surface: #422006;
+  --color-severity-high: #fdba74;
+  --color-severity-high-surface: #431407;
+  --color-severity-critical: #fda4af;
+  --color-severity-critical-surface: #4c0519;
+  --color-chart-1: #84cc16;
+  --color-chart-2: #c4b5fd;
+  --color-chart-3: #fdba74;
+  --color-chart-4: #fb7185;
+  --shadow-raised: 0 0.75rem 2rem rgb(0 0 0 / 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    'Inter',
+    'Inter Fallback',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 100%;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--color-accent);
+  font-weight: 650;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.16em;
+}
+
+:focus-visible {
+  @include mixins.focus-ring;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block-start: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.025em;
+}
+
+p {
+  max-width: 70ch;
+}
+
+.eyebrow {
+  margin-block-end: var(--space-1);
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.visually-hidden {
+  @include mixins.visually-hidden;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+@media (forced-colors: active) {
+  :root,
+  :root[data-theme='dark'] {
+    --color-bg: Canvas;
+    --color-surface: Canvas;
+    --color-surface-raised: Canvas;
+    --color-border: CanvasText;
+    --color-text: CanvasText;
+    --color-text-muted: CanvasText;
+    --color-accent: LinkText;
+    --color-accent-contrast: Canvas;
+    --color-focus: Highlight;
+  }
+
+  app-card,
+  header,
+  table {
+    border: 1px solid CanvasText;
+  }
+
+  [data-chart-color] {
+    forced-color-adjust: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

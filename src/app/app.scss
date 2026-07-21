@@ -1,0 +1,105 @@
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
+  transform: translateY(calc(-100% - var(--space-5)));
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.65rem, 2vw, 1.25rem);
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  padding-block: clamp(0.65rem, 1.5vw, 1rem);
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.brand {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -0.025em;
+}
+
+nav {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 0.4rem clamp(0.75rem, 3vw, 1.5rem);
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav a {
+  padding: 0.5rem 0.25rem;
+  color: var(--color-text-muted);
+  font-size: clamp(0.78rem, 2.5vw, 0.9rem);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+nav a.is-active {
+  color: var(--color-text);
+}
+
+app-theme-switch {
+  grid-area: 1 / -2;
+  justify-self: end;
+}
+
+main {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+  padding-block: clamp(var(--space-6), 5vw, var(--space-7));
+}
+
+main:focus {
+  outline: none;
+}
+
+@media (min-width: 48rem) {
+  .header-inner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  nav {
+    grid-column: auto;
+    justify-content: center;
+  }
+}

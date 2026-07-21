@@ -1,0 +1,47 @@
+<section class="panel" aria-labelledby="anomaly-panel-title" role="region">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow">Anomaly analysis</p>
+      <h2 id="anomaly-panel-title">{{ typeLabel() }}</h2>
+      <p class="distance">{{ anomaly().distanceM.toLocaleString('en-US') }} m along the run</p>
+    </div>
+    <div class="panel-actions">
+      <app-badge [severity]="anomaly().severity">{{ anomaly().severity }}</app-badge>
+      <app-button variant="quiet" (pressed)="closed.emit()">Close</app-button>
+    </div>
+  </header>
+
+  <section class="confidence" aria-labelledby="confidence-label">
+    <div class="confidence-heading">
+      <label id="confidence-label" for="anomaly-confidence">AI model confidence</label>
+      <strong>{{ confidencePercent() }}%</strong>
+    </div>
+    <meter id="anomaly-confidence" min="0" max="1" [value]="anomaly().confidence">
+      {{ confidencePercent() }}%
+    </meter>
+  </section>
+
+  <dl class="dimensions">
+    <div>
+      <dt>Wall loss depth</dt>
+      <dd>{{ formatNumber(anomaly().depthPct) }}%</dd>
+    </div>
+    <div>
+      <dt>Length</dt>
+      <dd>{{ formatNumber(anomaly().lengthMm) }} mm</dd>
+    </div>
+    <div>
+      <dt>Width</dt>
+      <dd>{{ formatNumber(anomaly().widthMm) }} mm</dd>
+    </div>
+    <div>
+      <dt>Clock position</dt>
+      <dd>{{ anomaly().clockPosition }} o'clock</dd>
+    </div>
+  </dl>
+
+  <div class="heatmap-section">
+    <h3>Ultrasound signature</h3>
+    <app-heatmap [anomaly]="anomaly()" />
+  </div>
+</section>

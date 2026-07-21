@@ -1,0 +1,66 @@
+<div
+  class="table-scroll"
+  role="region"
+  tabindex="0"
+  [attr.aria-label]="caption() + ', scrollable table'"
+>
+  <table>
+    <caption>
+      {{
+        caption()
+      }}
+    </caption>
+    <thead>
+      <tr>
+        @for (column of columns(); track column.id) {
+          <th
+            scope="col"
+            [attr.aria-sort]="ariaSort(column)"
+            [class.align-end]="column.align === 'end'"
+          >
+            @if (column.sortComparator) {
+              <button type="button" (click)="toggleSort(column)">
+                {{ column.header }}
+                <span aria-hidden="true">
+                  @if (sort()?.columnId === column.id) {
+                    {{ sort()?.direction === 'asc' ? '↑' : '↓' }}
+                  } @else {
+                    ↕
+                  }
+                </span>
+              </button>
+            } @else {
+              {{ column.header }}
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of sortedRows(); track rowKey()(row)) {
+        <tr [class.is-linked]="rowLink()" (click)="activateRow($event)">
+          @for (column of columns(); track column.id; let first = $first) {
+            <td [class.align-end]="column.align === 'end'">
+              @let link = rowLink();
+              @if (first && link) {
+                <a
+                  data-row-link
+                  [routerLink]="link(row)"
+                  [attr.aria-label]="rowLabel()?.(row) ?? null"
+                >
+                  {{ column.cell(row) }}
+                </a>
+              } @else {
+                {{ column.cell(row) }}
+              }
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td class="empty" [attr.colspan]="columns().length || 1">{{ emptyMessage() }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

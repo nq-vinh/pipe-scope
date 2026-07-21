@@ -1,0 +1,9 @@
+<app-card variant="raised">
+  <p class="stat-label">{{ label() }}</p>
+  <p class="stat-value">
+    <span>{{ formattedValue() }}</span>
+    <span class="unit">{{ unit() }}</span>
+    <span class="trend" [attr.data-trend]="trend()" aria-hidden="true">{{ trendSymbol() }}</span>
+    <span class="visually-hidden">{{ trendLabel() }}</span>
+  </p>
+</app-card>

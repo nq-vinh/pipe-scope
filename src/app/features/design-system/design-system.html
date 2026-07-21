@@ -1,0 +1,249 @@
+<header class="page-header">
+  <p class="eyebrow">Shared foundations</p>
+  <h1>Design system</h1>
+  <p class="intro">
+    A compact reference for the tokens and accessible UI primitives used across PipeScope.
+  </p>
+</header>
+
+<div class="design-sections">
+  <section aria-labelledby="color-tokens-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Color</p>
+        <h2 id="color-tokens-title">Color tokens</h2>
+      </div>
+      <p class="section-note">Ratios are read from the active theme at runtime.</p>
+    </div>
+
+    @for (group of colorGroups(); track group.title) {
+      <div class="token-group">
+        <h3>{{ group.title }}</h3>
+        <ul class="color-grid">
+          @for (token of group.tokens; track token.name) {
+            <li class="token-card">
+              <div class="token-heading">
+                <span
+                  class="color-swatch"
+                  [style.background-color]="token.value"
+                  aria-hidden="true"
+                ></span>
+                <div>
+                  <strong>{{ token.label }}</strong>
+                  <code>{{ token.name }}</code>
+                </div>
+              </div>
+              <dl class="token-details">
+                <div>
+                  <dt>Resolved value</dt>
+                  <dd>{{ token.value }}</dd>
+                </div>
+                <div>
+                  <dt>Contrast</dt>
+                  <dd>{{ token.contrastLabel }}: {{ formatContrast(token.contrast) }}</dd>
+                </div>
+              </dl>
+              <span class="token-target">Target: {{ token.target }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </section>
+
+  <section aria-labelledby="type-scale-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Typography</p>
+        <h2 id="type-scale-title">Type scale</h2>
+      </div>
+      <p class="section-note">Use the token that matches the content role.</p>
+    </div>
+
+    <ul class="type-scale">
+      @for (token of typeScale; track token.name) {
+        <li>
+          <span class="type-sample" [style.font-size]="'var(' + token.name + ')'">{{
+            token.sample
+          }}</span>
+          <div class="scale-meta">
+            <strong>{{ token.label }}</strong>
+            <code>{{ token.name }}</code>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="spacing-scale-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Layout</p>
+        <h2 id="spacing-scale-title">Spacing scale</h2>
+      </div>
+      <p class="section-note">Bars are sized with the same custom properties used by the UI.</p>
+    </div>
+
+    <ul class="spacing-scale">
+      @for (token of spacingScale; track token.name) {
+        <li>
+          <span
+            class="space-bar"
+            [style.width]="'var(' + token.name + ')'"
+            aria-hidden="true"
+          ></span>
+          <strong>{{ token.label }}</strong>
+          <code>{{ token.name }}</code>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="shared-ui-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Components</p>
+        <h2 id="shared-ui-title">Shared UI examples</h2>
+      </div>
+      <p class="section-note">Each example is a live component, not a generated prop table.</p>
+    </div>
+
+    <div class="example-grid">
+      <article class="example-card" aria-labelledby="badge-example-title">
+        <header class="example-heading">
+          <h3 id="badge-example-title">Badge</h3>
+          <code>app-badge</code>
+        </header>
+        <div class="live-example badge-example">
+          <app-badge severity="high">High</app-badge>
+          <app-badge severity="critical">Critical</app-badge>
+        </div>
+        <p class="usage-note">
+          Usage: use a severity badge beside a finding or status when the label should remain short
+          and scannable.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="button-example-title">
+        <header class="example-heading">
+          <h3 id="button-example-title">Button</h3>
+          <code>app-button</code>
+        </header>
+        <div class="live-example button-example">
+          <app-button (pressed)="acknowledgeButton()">Run sample action</app-button>
+          <app-button variant="secondary">Secondary</app-button>
+          <app-button variant="quiet">Quiet</app-button>
+          <p class="example-status" role="status">{{ buttonMessage() }}</p>
+        </div>
+        <p class="usage-note">
+          Usage: choose primary for the next action, secondary for a parallel action, and quiet for
+          low-emphasis controls.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="card-example-title">
+        <header class="example-heading">
+          <h3 id="card-example-title">Card</h3>
+          <code>app-card</code>
+        </header>
+        <div class="live-example">
+          <app-card variant="raised">
+            <p class="card-kicker">Example metric</p>
+            <strong class="card-value">38.4 km</strong>
+            <span class="card-detail">Inspected distance</span>
+          </app-card>
+        </div>
+        <p class="usage-note">
+          Usage: use a card to group a related metric or content block; reserve the raised variant
+          for an item that needs visual priority.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="icon-example-title">
+        <header class="example-heading">
+          <h3 id="icon-example-title">Icon</h3>
+          <code>app-icon</code>
+        </header>
+        <div class="live-example icon-example">
+          <app-icon name="warning" label="Warning" [size]="32" />
+          <app-icon name="pipeline" label="Pipeline" [size]="32" />
+          <app-icon name="arrow" [size]="24" />
+        </div>
+        <p class="usage-note">
+          Usage: provide a label when the icon carries meaning; omit it when the surrounding text
+          already names the action.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="theme-example-title">
+        <header class="example-heading">
+          <h3 id="theme-example-title">Theme switch</h3>
+          <code>app-theme-switch</code>
+        </header>
+        <div class="live-example theme-example">
+          <app-theme-switch />
+        </div>
+        <p class="usage-note">
+          Usage: use the button to switch between light and dark themes. With no override, the
+          dashboard follows the operating system preference.
+        </p>
+      </article>
+
+      <article class="example-card table-example-card" aria-labelledby="table-example-title">
+        <header class="example-heading">
+          <h3 id="table-example-title">Data table</h3>
+          <code>app-data-table</code>
+        </header>
+        <div class="live-example">
+          <app-data-table
+            caption="Sensor readings"
+            [columns]="demoColumns"
+            [rows]="demoRows"
+            [rowKey]="demoRowKey"
+            [sort]="demoSort()"
+            (sortChange)="demoSort.set($event)"
+          />
+        </div>
+        <p class="usage-note">
+          Usage: pass typed column definitions and a signal-backed sort model; the component keeps
+          the native table and sortable header semantics intact.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="heatmap-example-title">
+        <header class="example-heading">
+          <h3 id="heatmap-example-title">Heatmap</h3>
+          <code>app-heatmap</code>
+        </header>
+        <div class="live-example heatmap-example">
+          <app-heatmap [anomaly]="demoAnomaly" />
+        </div>
+        <p class="usage-note">
+          Usage: pair the canvas visualization with its descriptive image label; the rendered peak
+          cell gives assistive technology a useful text summary.
+        </p>
+      </article>
+
+      <article class="example-card" aria-labelledby="severity-example-title">
+        <header class="example-heading">
+          <h3 id="severity-example-title">Severity legend</h3>
+          <code>badge + text</code>
+        </header>
+        <div class="live-example">
+          <ul class="severity-legend">
+            @for (item of severityLegend; track item.severity) {
+              <li>
+                <app-badge [severity]="item.severity">{{ item.label }}</app-badge>
+                <span>{{ item.description }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+        <p class="usage-note">
+          Usage: keep the text label with the color so severity remains understandable without
+          relying on color alone.
+        </p>
+      </article>
+    </div>
+  </section>
+</div>

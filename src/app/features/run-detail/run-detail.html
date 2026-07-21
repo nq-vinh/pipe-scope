@@ -1,0 +1,75 @@
+@if (run(); as currentRun) {
+  <div class="detail-page" tabindex="-1" (keydown)="handleKeydown($event)">
+    <header class="detail-header">
+      <a class="back-link" routerLink="/runs">← Back to runs</a>
+      <div class="title-block">
+        <p class="eyebrow">Inspection run</p>
+        <h1>{{ currentRun.id }}</h1>
+        <p class="segment-name">{{ currentRun.segment.name }}</p>
+      </div>
+
+      <ul class="metadata" aria-label="Run metadata">
+        <li>
+          <span>Date</span>
+          <strong>{{ formatDate(currentRun.startedAt) }}</strong>
+        </li>
+        <li>
+          <span>Coverage</span>
+          <strong>{{ formatNumber(currentRun.distanceKm) }} km</strong>
+        </li>
+        <li>
+          <span>Duration</span>
+          <strong>{{ formatDuration(currentRun.durationMin) }}</strong>
+        </li>
+        <li>
+          <span>Status</span>
+          <strong>{{ statusLabel() }}</strong>
+        </li>
+        <li>
+          <span>Diameter</span>
+          <strong>{{ currentRun.segment.diameterInch }} in</strong>
+        </li>
+      </ul>
+    </header>
+
+    <div class="detail-layout">
+      <section class="map-section" aria-labelledby="pipeline-map-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Spatial overview</p>
+            <h2 id="pipeline-map-title">Pipeline map</h2>
+          </div>
+          <app-badge [severity]="statusSeverity()">
+            {{ statusLabel() }}
+          </app-badge>
+        </div>
+
+        <app-pipeline-map
+          [anomalies]="anomalies()"
+          [distanceKm]="currentRun.distanceKm"
+          [runId]="currentRun.id"
+          [segmentName]="currentRun.segment.name"
+          [selectedAnomalyId]="selectedAnomalyId()"
+          (anomalySelected)="selectAnomaly($event)"
+        />
+      </section>
+
+      @if (selectedAnomaly(); as currentAnomaly) {
+        <app-anomaly-panel [anomaly]="currentAnomaly" (closed)="anomalyClosed()" />
+      } @else {
+        <app-card class="selection-empty">
+          <p class="eyebrow">Anomaly analysis</p>
+          <h2>Select a finding</h2>
+          <p>Choose a marker on the pipeline map or use the table view to inspect its details.</p>
+        </app-card>
+      }
+    </div>
+  </div>
+} @else {
+  <app-card class="not-found">
+    <p class="eyebrow">Inspection run</p>
+    <h1>Run not found</h1>
+    <p>The requested inspection run is not in the seeded inspection history.</p>
+    <a routerLink="/runs">Back to runs</a>
+  </app-card>
+}

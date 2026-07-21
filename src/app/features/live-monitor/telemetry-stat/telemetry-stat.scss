@@ -1,0 +1,63 @@
+@use '../../../../styles/mixins' as mixins;
+
+:host {
+  display: block;
+}
+
+.stat-label {
+  margin-block-end: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  margin: 0;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.unit {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.trend {
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: var(--font-size-md);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.trend[data-trend='rising'] {
+  background: var(--color-severity-low-surface);
+  color: var(--color-severity-low);
+}
+
+.trend[data-trend='falling'] {
+  background: var(--color-severity-high-surface);
+  color: var(--color-severity-high);
+}
+
+.trend[data-trend='steady'] {
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+}
+
+.visually-hidden {
+  @include mixins.visually-hidden;
+}

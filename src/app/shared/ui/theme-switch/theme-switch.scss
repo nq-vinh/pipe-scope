@@ -1,0 +1,34 @@
+:host {
+  display: inline-flex;
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.theme-toggle svg {
+  grid-area: 1 / 1;
+}
+
+.theme-toggle .icon-moon,
+.theme-toggle[aria-pressed='true'] .icon-sun {
+  display: none;
+}
+
+.theme-toggle[aria-pressed='true'] .icon-moon {
+  display: block;
+}
