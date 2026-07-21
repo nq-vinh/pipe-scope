@@ -1,12 +1,10 @@
 ![Runs overview](docs/screenshots/runs-overview.png)
 ![Run detail with pipeline map and anomaly panel](docs/screenshots/run-detail.png)
 ![Live monitor with ultrasound trace, dark theme](docs/screenshots/live-monitor.png)
-![Design system tokens](docs/screenshots/design-system.png)
 ![Runs overview, dark theme](docs/screenshots/runs-overview-dark.png)
+![Design system tokens](docs/screenshots/design-system.png)
 
 # PipeScope
-
-## 30-second pitch
 
 PipeScope is an Angular 22 showcase dashboard for exploring deterministic, simulated in-line pipeline inspection runs.
 It combines a filterable run history, an accessible SVG pipeline map, and a live ultrasound stream rendered on canvas.
@@ -81,7 +79,7 @@ npm run e2e
 ```
 
 The Playwright web server serves `dist/pipe-scope/browser` so local runs use the same static artifact shape as CI.
-The `e2e/` directory currently contains only the valid harness configuration because the test specifications are owned by the E2E phase.
+The `e2e/` directory contains the harness configuration plus five spec files covering navigation, the runs explorer, the anomaly map, the live monitor, and theming.
 
 ## Accessibility
 
@@ -93,16 +91,11 @@ Severity is always expressed with text as well as color.
 The live monitor starts paused when reduced motion is requested, while the global reduced-motion and forced-colors styles preserve usable focus and surface boundaries.
 The token page reports runtime contrast ratios for the active theme, with text targets of 4.5:1 and UI-graphic targets of 3:1.
 
-## Azure Static Web Apps
+## CI and deployment
 
-Create an Azure Static Web Apps resource and connect it to the repository or provide its deployment token to a GitHub Actions workflow.
-Use the Angular build output as the deployment artifact:
-
-```yaml
-app_location: /
-output_location: dist/pipe-scope/browser
-app_build_command: npm run build
-```
+`.github/workflows/ci.yml` runs on every push and pull request: it lints, runs the unit suite, builds the production bundle, and executes the Playwright E2E suite against the built artifact.
+The build step fails on any `WARNING` or budget message in the Angular output.
+On pushes to `main`, the same verified `dist/pipe-scope/browser` artifact is deployed to Azure Static Web Apps with `skip_app_build: true`, authenticated by the `AZURE_STATIC_WEB_APPS_API_TOKEN` repository secret.
 
 The root `staticwebapp.config.json` is copied into that browser output by the Angular asset configuration, so SPA fallback and security headers reach the deployed artifact.
 The fallback rewrites application routes to `/index.html` while leaving JavaScript, CSS, and public assets to return normally.
