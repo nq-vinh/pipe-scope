@@ -70,4 +70,3 @@ jobs:
           action: upload
           app_location: dist/pipe-scope/browser
           skip_app_build: true
-          skip_api_build: true
