@@ -1,14 +1,14 @@
 <section class="panel" aria-labelledby="anomaly-panel-title" role="region">
   <header class="panel-header">
-    <div>
+    <div class="panel-heading">
       <p class="eyebrow">Anomaly analysis</p>
-      <h2 id="anomaly-panel-title">{{ typeLabel() }}</h2>
-      <p class="distance">{{ anomaly().distanceM.toLocaleString('en-US') }} m along the run</p>
+      <div class="panel-actions">
+        <app-badge [severity]="anomaly().severity">{{ anomaly().severity }}</app-badge>
+        <app-button variant="quiet" (pressed)="closed.emit()">Close</app-button>
+      </div>
     </div>
-    <div class="panel-actions">
-      <app-badge [severity]="anomaly().severity">{{ anomaly().severity }}</app-badge>
-      <app-button variant="quiet" (pressed)="closed.emit()">Close</app-button>
-    </div>
+    <h2 id="anomaly-panel-title">{{ typeLabel() }}</h2>
+    <p class="distance">{{ anomaly().distanceM.toLocaleString('en-US') }} m along the run</p>
   </header>
 
   <section class="confidence" aria-labelledby="confidence-label">
